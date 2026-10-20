@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const menuItemSchema = new mongoose.Schema({
+const MenuItemSchema = new mongoose.Schema({
   name:{
     type:String,
     required:true
@@ -23,4 +23,4 @@ const menuItemSchema = new mongoose.Schema({
   imageUrl: String
 });
 
-module.exports = mongoose.model('MenuItem',menuItemSchema);
+module.exports = mongoose.model('MenuItem',MenuItemSchema);
