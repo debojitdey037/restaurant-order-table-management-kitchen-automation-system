@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link, useNavigate, useParams } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
@@ -153,6 +152,8 @@ function Menu({ onAddToCart, user }) {
           <option value="">All Categories</option>
           <option value="Starters">Starters</option>
           <option value="Main Course">Main Course</option>
+          <option value="Breads & Rice">Breads & Rice</option>
+          <option value="Desserts & Beverages">Desserts & Beverages</option>
           <option value="Desserts">Desserts</option>
           <option value="Beverages">Beverages</option>
         </select>
@@ -759,6 +760,8 @@ function AdminMenuForm() {
           <select value={category} onChange={e => setCategory(e.target.value)}>
             <option value="Starters">Starters</option>
             <option value="Main Course">Main Course</option>
+            <option value="Breads & Rice">Breads & Rice</option>
+            <option value="Desserts & Beverages">Desserts & Beverages</option>
             <option value="Desserts">Desserts</option>
             <option value="Beverages">Beverages</option>
           </select>
@@ -852,12 +855,23 @@ function KitchenScreen() {
 }
 
 function App() {
-  const [user, setUser] = useState(
-    localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
-  );
-  const [cart, setCart] = useState(
-    localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : []
-  );
+  const [user, setUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem('user');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [cart, setCart] = useState(() => {
+    try {
+      const stored = localStorage.getItem('cart');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -901,8 +915,7 @@ function App() {
     setCart([]);
   }
 
-  let cartCount = 0;
-  for (let i = 0; i < cart.length; i++) cartCount += cart[i].quantity;
+  const cartCount = cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
 
   return (
     <BrowserRouter>

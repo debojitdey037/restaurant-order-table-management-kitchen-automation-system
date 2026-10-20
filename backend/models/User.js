@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
         enum:['customer','admin'],
         default:'customer'
     }
-})
+}, { timestamps: true })
 
 userSchema.pre('save',async function(){
   if(this.isModified('password')) {

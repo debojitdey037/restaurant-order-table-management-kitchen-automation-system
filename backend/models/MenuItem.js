@@ -21,6 +21,6 @@ const MenuItemSchema = new mongoose.Schema({
     default: true
   },
   imageUrl: String
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('MenuItem',MenuItemSchema);

@@ -17,6 +17,6 @@ router.patch('/:id/cancel',protect,cancelMyOrder)
 router.get('/',protect,adminOnly,getAllOrders);
 router.patch('/:id/status',protect,adminOnly,updateOrderStatus);
 
-router.get('/id',protect,getOrderById);
+router.get('/:id',protect,getOrderById);
 
 module.exports = router;
